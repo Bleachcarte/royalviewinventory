@@ -157,3 +157,4 @@ For issues or questions:
 2. Verify OAuth configuration
 3. Ensure proper sheet structure and permissions
 4. Check browser console for detailed error messages# royalviewinventory
+# royalviewinventory
