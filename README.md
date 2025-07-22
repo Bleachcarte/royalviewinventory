@@ -1,160 +1,148 @@
-# Google Sheets Inventory Management System
+# Royal View Inventory Management System
 
-A beautiful, Apple-inspired inventory management system that uses Google Sheets as the backend database with Google authentication for access control.
+A robust, secure, and user-friendly inventory management platform for **Royal View Services Ltd.**  
+Built with React, TypeScript, Tailwind CSS, and Firebase (Firestore & Authentication).
 
-## Features
+---
 
-- **Google Sheets Integration**: Real-time synchronization with your Google Sheets
-- **Google Authentication**: Secure login using Google accounts
-- **Role-Based Access Control**: Core Admin, Admin, and User roles managed through Google Sheets
-- **Real-time Dashboard**: Weekly analytics and stock movement tracking
-- **Interactive Inventory Table**: Full CRUD operations synchronized with Google Sheets
-- **Search & Filter**: Advanced search by item code with invoice-ready descriptions
-- **Print Support**: Print-friendly views for reports and inventory listings
-- **Responsive Design**: Apple-inspired UI that works on all devices
+## 🚀 Overview
 
-## Setup Instructions
+This system is designed to streamline inventory and user management for Royal View Services Ltd., providing real-time data, granular permissions, and a modern, responsive interface.  
+It replaces legacy spreadsheet-based workflows with a scalable, persistent, and auditable solution.
 
-### 1. Google Cloud Console Setup
+---
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Google Sheets API and Google Drive API
-4. Create credentials (OAuth 2.0 Client ID) for a web application
-5. Add your domain to authorized origins (e.g., `http://localhost:5173` for development)
+## ✨ Features
 
-### 2. Google Sheets Setup
+### Inventory Management
+- **Add, Edit, and Delete Items:** Full CRUD for inventory items.
+- **Category & Subcategory Management:** Core admins can add new categories and subcategories directly from the inventory page.
+- **Stock In/Out Tracking:** Users can update stock in/out as deltas; only core admins can edit other fields.
+- **Defensive Data Mapping:** Prevents blank pages or crashes when data is missing or malformed.
+- **Export/Import:** Export inventory as CSV; robust CSV import with validation and user feedback.
+- **Out Date Logic:** “Out Date” only displays if `stockOut` is greater than 0 or has been modified.
 
-Create a Google Sheet with the following tabs:
+### User Management
+- **Add/Edit Users:** Core admins can add new users (with password setup) and edit user details.
+- **Role-Based Access:** Core Admin, Admin, and User roles, with permissions enforced via Firestore.
+- **User Info Popup:** Click the vertical dots on the Users page to view user details in a popup.
 
-#### Inventory Sheet
-Columns (A-R):
-- A: ID
-- B: Code
-- C: Description  
-- D: Category
-- E: Subcategory
-- F: Stock1
-- G: Stock2
-- H: StockIn
-- I: StockInDate
-- J: StockOut
-- K: StockOutDate
-- L: Purpose
-- M: Balance
-- N: BalanceAfterReconciliation
-- O: CreatedAt
-- P: UpdatedAt
-- Q: CreatedBy
-- R: LastModifiedBy
+### Authentication & Security
+- **Firebase Authentication:** Secure login and registration; passwords stored securely.
+- **Permission Enforcement:** All sensitive actions are protected by role checks.
 
-#### Users Sheet
-Columns (A-D):
-- A: Email
-- B: Role (core_admin, admin, user)
-- C: Department
-- D: Active (TRUE/FALSE)
+### Dashboard & Analytics
+- **Weekly Activity Panel:** Dashboard displays this week’s ins, outs, and total balances, refreshing weekly.
+- **Accurate Stock Calculations:** “Stock Out” is a summation, not a multiplication.
 
-#### Categories Sheet
-Columns (A-C):
-- A: ID
-- B: Name
-- C: Subcategories (comma-separated)
+### Notifications
+- **In-App Notifications:** All inventory and user management actions generate notifications for all users.
+- **Persistent Notifications:** Notifications are stored in local storage and can be dismissed individually.
+- **Notification UI:** Accessible via the bell icon; search icon removed for clarity.
 
-#### Transactions Sheet
-Columns (A-H):
-- A: ID
-- B: ItemCode
-- C: Type (in/out)
-- D: Quantity
-- E: Date
-- F: Purpose
-- G: PerformedBy
-- H: Notes
+### UI/UX
+- **Apple-Inspired Design:** Clean, modern, and responsive interface.
+- **Persistent Footer:** “2025 Royal View Services Ltd.” displayed on every page.
+- **Custom Favicon:** Branded icon for browser tabs.
 
-### 3. Environment Configuration
+---
 
-1. Copy `.env.example` to `.env`
-2. Fill in your Google configuration:
+## 🏗️ Project Structure
 
-```env
-VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
-VITE_GOOGLE_API_KEY=your_google_api_key_here
-VITE_GOOGLE_SHEET_ID=your_google_sheet_id_here
-
-VITE_INVENTORY_SHEET_NAME=Inventory
-VITE_USERS_SHEET_NAME=Users
-VITE_CATEGORIES_SHEET_NAME=Categories
-VITE_TRANSACTIONS_SHEET_NAME=Transactions
+```
+src/
+  components/
+    Auth/           # Login form
+    Dashboard/      # Dashboard panels
+    Inventory/      # Inventory table, add/edit modals
+    Layout/         # App layout and footer
+    Users/          # User management
+  contexts/         # React contexts for Auth, Inventory, Notifications, etc.
+  types/            # TypeScript types
+  firebase.ts       # Firebase initialization
+  index.css         # Tailwind CSS
+  main.tsx          # App entry point
+  App.tsx           # Main app component
+src/favicon.png     # Custom favicon
+public/             # (optional) for static assets
 ```
 
-### 4. Installation & Running
+---
 
-```bash
+## ⚙️ Getting Started
+
+### 1. Clone the Repository
+
+```sh
+git clone https://github.com/Bleachcarte/royalviewinventory.git
+cd royalviewinventory
+```
+
+### 2. Install Dependencies
+
+```sh
 npm install
+```
+
+### 3. Firebase Setup
+
+- Go to [Firebase Console](https://console.firebase.google.com/).
+- Create a project, enable **Firestore Database** and **Authentication** (Email/Password).
+- Add a web app and copy your Firebase config.
+
+### 4. Environment Variables
+
+Copy `.env.example` to `.env` and fill in your Firebase config:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 5. Run the App
+
+```sh
 npm run dev
 ```
 
-## User Roles & Permissions
+Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Core Admin
-- Full access to all features
-- Can manage users and permissions
-- Can add, edit, and delete inventory items
-- Can view all analytics and reports
-- Can export data and manage categories
+---
 
-### Admin
-- Can add and edit inventory items
-- Can view analytics and reports
-- Can export data
-- Cannot manage users or permissions
+## 👤 User Roles & Permissions
 
-### User
-- Read-only access to inventory
-- Can view basic inventory information
-- Cannot modify data or access admin features
+- **Core Admin:** Full access, can manage users, categories, and all inventory data.
+- **Admin:** Can manage inventory, but not users or permissions.
+- **User:** Can view inventory and update stock in/out, but cannot edit other fields.
 
-## Google Sheets as Database
+---
 
-The system treats your Google Sheet as the primary database:
+## 🛠️ Development Notes
 
-- **Real-time Sync**: All changes are immediately reflected in Google Sheets
-- **Collaborative**: Multiple users can work simultaneously
-- **Backup**: Google Sheets provides automatic backup and version history
-- **Accessible**: Data can be accessed directly in Google Sheets when needed
-- **Familiar**: Uses the familiar Google Sheets interface for data management
+- **Contexts:** All data (inventory, users, notifications) is managed via React Contexts and persisted in Firestore.
+- **Defensive Coding:** All data mapping is defensive to prevent blank pages or crashes.
+- **Notifications:** All actions are logged as notifications for transparency and auditability.
 
-## Security
+---
 
-- Google OAuth 2.0 authentication
-- Role-based access control through Google Sheets
-- API key protection
-- Secure token handling
-- Permission validation on all operations
+## 🚚 Deployment
 
-## Development
+1. Build the app:
+   ```sh
+   npm run build
+   ```
+2. Deploy the `dist/` folder to your preferred static hosting (Vercel, Netlify, Firebase Hosting, etc.).
 
-The application is built with:
-- React 18 with TypeScript
-- Tailwind CSS for styling
-- Google Sheets API v4
-- Google Auth Library
-- Vite for development and building
+---
 
-## Deployment
+## 🆘 Support
 
-For production deployment:
-1. Update OAuth redirect URIs in Google Cloud Console
-2. Set production environment variables
-3. Build the application: `npm run build`
-4. Deploy to your preferred hosting platform
+For issues or questions, please open an issue on the [GitHub repository](https://github.com/Bleachcarte/royalviewinventory).
 
-## Support
+---
 
-For issues or questions:
-1. Check Google Sheets API documentation
-2. Verify OAuth configuration
-3. Ensure proper sheet structure and permissions
-4. Check browser console for detailed error messages# royalviewinventory
-# royalviewinventory
+© 2025 Royal View Services Ltd.
